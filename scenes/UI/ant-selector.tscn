@@ -1,0 +1,121 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/7vzk5vid.bmp" type="Texture" id=1]
+[ext_resource path="res://assets/KenneyUI/PNG/White/1x/return.png" type="Texture" id=2]
+[ext_resource path="res://assets/KenneyUI/PNG/White/1x/larger.png" type="Texture" id=3]
+[ext_resource path="res://scripts/UI/ant-selector.gd" type="Script" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[node name="Ant1" type="CenterContainer"]
+margin_right = 132.0
+margin_bottom = 166.0
+size_flags_horizontal = 3
+script = ExtResource( 4 )
+
+[node name="list" type="VBoxContainer" parent="."]
+margin_left = 16.0
+margin_right = 116.0
+margin_bottom = 166.0
+size_flags_horizontal = 3
+
+[node name="sprite" type="MarginContainer" parent="list"]
+margin_right = 100.0
+margin_bottom = 100.0
+custom_constants/margin_right = 50
+custom_constants/margin_top = 50
+custom_constants/margin_left = 50
+custom_constants/margin_bottom = 50
+
+[node name="centre" type="Control" parent="list/sprite"]
+margin_left = 50.0
+margin_top = 50.0
+margin_right = 50.0
+margin_bottom = 50.0
+
+[node name="sprite" type="TextureRect" parent="list/sprite/centre"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -50.0
+margin_right = 50.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="expand" type="TextureRect" parent="list/sprite/centre/sprite"]
+modulate = Color( 0.129412, 0.129412, 0.129412, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -25.0
+margin_right = 25.0
+margin_bottom = 25.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="list"]
+margin_top = 104.0
+margin_right = 100.0
+margin_bottom = 118.0
+text = "Ant 1"
+align = 1
+
+[node name="mode" type="PanelContainer" parent="list"]
+margin_top = 122.0
+margin_right = 100.0
+margin_bottom = 142.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Button" type="Button" parent="list/mode"]
+margin_right = 100.0
+margin_bottom = 20.0
+icon = ExtResource( 2 )
+flat = true
+expand_icon = true
+
+[node name="Label" type="Label" parent="list/mode"]
+margin_right = 100.0
+margin_bottom = 20.0
+size_flags_vertical = 1
+text = "Gather"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="birth" type="PanelContainer" parent="list"]
+margin_top = 146.0
+margin_right = 100.0
+margin_bottom = 166.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="Button" type="Button" parent="list/birth"]
+margin_right = 100.0
+margin_bottom = 20.0
+icon = ExtResource( 2 )
+flat = true
+expand_icon = true
+
+[node name="Label" type="Label" parent="list/birth"]
+margin_right = 100.0
+margin_bottom = 20.0
+size_flags_vertical = 1
+text = "¥500"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
