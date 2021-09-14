@@ -2,19 +2,19 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Basic Ant Idle.png-b2de94681e26f0e35c87f8c754da5814.stex"
+path="res://.import/lettuce.png-c056407ccb340915555acf295154c082.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Basic Ant Idle.png"
-dest_files=[ "res://.import/Basic Ant Idle.png-b2de94681e26f0e35c87f8c754da5814.stex" ]
+source_file="res://assets/lettuce.png"
+dest_files=[ "res://.import/lettuce.png-c056407ccb340915555acf295154c082.stex" ]
 
 [params]
 
-compress/mode=3
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0

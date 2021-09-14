@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Basic Ant Idle.png-b2de94681e26f0e35c87f8c754da5814.stex"
+path="res://.import/Basic Ant Walk.png-8f0daefca130ac1d3ecc050fc7d04e64.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Basic Ant Idle.png"
-dest_files=[ "res://.import/Basic Ant Idle.png-b2de94681e26f0e35c87f8c754da5814.stex" ]
+source_file="res://assets/Basic Ant Walk.png"
+dest_files=[ "res://.import/Basic Ant Walk.png-8f0daefca130ac1d3ecc050fc7d04e64.stex" ]
 
 [params]
 
