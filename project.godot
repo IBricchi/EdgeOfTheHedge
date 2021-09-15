@@ -14,6 +14,10 @@ config/name="EdgeOfTheHedge"
 run/main_scene="res://scenes/game.tscn"
 config/icon="res://icon.png"
 
+[layer_names]
+
+2d_physics/layer_2="Food_layer"
+
 [physics]
 
 common/enable_pause_aware_picking=true
