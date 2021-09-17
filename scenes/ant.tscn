@@ -89,13 +89,14 @@ animations = [ {
 } ]
 
 [node name="Ant" type="KinematicBody2D"]
+collision_layer = 0
+collision_mask = 3
 script = ExtResource( 3 )
 
 [node name="Basic Ant Idle" type="AnimatedSprite" parent="."]
 rotation = 1.5708
 frames = SubResource( 6 )
 animation = "Idle"
-frame = 2
 playing = true
 
 [node name="Basic Ant Walk" type="AnimatedSprite" parent="."]
@@ -103,12 +104,12 @@ visible = false
 rotation = 1.5708
 frames = SubResource( 19 )
 animation = "Walk"
-frame = 8
+frame = 3
 playing = true
 
 [node name="AntCollision" type="CollisionPolygon2D" parent="."]
 visible = false
-polygon = PoolVector2Array( -0.757828, 28.074, 1.00994, 28.1624, 5.78291, 23.8314, 7.46229, 13.5783, 15.9784, 23.1745, 20.1406, -0.0150528, 19.546, -9.52871, 19.2487, -12.6504, 9.58641, -8.19085, 5.42936, -30.6159, -5.08885, -30.5275, -9.88685, -8.3395, -18.8059, -12.9477, -20.4411, -0.90696, -16.1302, 22.4312, -7.29856, 15.788, -6.14951, 23.743 )
+polygon = PoolVector2Array( -16, -8, -16, 8, 24, 8, 24, -8 )
 
 [node name="Area2D" type="Area2D" parent="."]
 rotation = 1.5708

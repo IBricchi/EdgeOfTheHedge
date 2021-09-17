@@ -43,9 +43,10 @@ func _physics_process(delta):
 			var to_focus : Vector2 = focus.position - self.position
 			desired_direction = (desired_direction + 0.1 * speed* delta*to_focus).normalized()
 		
-		var raycollision = check_collision_ray(delta)
-		if raycollision:
-			desired_direction =  (desired_direction - 0.25* raycollision.normalized()).normalized()
+		# check ray collision 
+		#var raycollision = check_collision_ray(delta)
+		#if raycollision:
+		#	desired_direction =  (desired_direction + pow(-1, randi()%2) * (Vector2(raycollision.y, -raycollision.x).normalized())).normalized()
 		
 		var move_collision_result = move_and_collide( desired_direction * speed)
 		# if the ant collides stop moving
@@ -91,7 +92,7 @@ func check_collision_ray(delta : float):
 	# rotate the collision ray and check if it hits something, if it does return vector to it 
 	ray.rotation += PI * delta * 2 # rotate once a second	
 	if ray.is_colliding():
-		if (ray.get_collision_point() - focus.position).length() > 25:
+		if focus and  (ray.get_collision_point() - focus.position).length() > 25:
 			return ray.get_collision_point() - self.position 
 		
 func focus_reached():

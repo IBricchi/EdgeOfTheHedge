@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-var nom_nom_value : int = floor(rand_range(2,6)) # how many times this lettuce can be eatenm between 2 and 5
+var nom_nom_value : int = floor(rand_range(2,6)) # how many times this lettuce can be eaten between 2 and 5
 
 
 func _ready():
