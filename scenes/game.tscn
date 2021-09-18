@@ -235,7 +235,7 @@ points = PoolVector2Array( 64, 30.7886, 63.4421, 62.135, 0, 64, 0, 29.8241, 7.50
 } ]
 11/z_index = 0
 
-[node name="Node2D" type="Node2D"]
+[node name="game" type="Node2D"]
 script = ExtResource( 3 )
 
 [node name="TileMap" type="TileMap" parent="." groups=[

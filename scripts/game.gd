@@ -1,6 +1,7 @@
 extends Node2D
 
 var ant : Resource = preload("res://scenes/ant.tscn")
+var queen : Resource = preload("res://scenes/queen.tscn")
 var lettuce : Resource = preload("res://scenes/lettuce.tscn")
 onready var cam : Camera2D = $Camera2D
 
@@ -24,6 +25,10 @@ func _ready():
 		add_child(ant1)
 		ant1.translate( ant_home)
 		ant1.set_ant_home(ant_home)
+	
+	var q = queen.instance()
+	add_child(q)
+	q.translate(ant_home)
 		
 	for i in range(200):
 		var lett = lettuce.instance()
