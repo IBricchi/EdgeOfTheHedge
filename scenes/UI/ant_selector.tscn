@@ -50,7 +50,7 @@ render_target_update_mode = 3
 
 [node name="Camera" type="Camera2D" parent="cont/cont/viewport/Viewport"]
 
-[node name="Basic Ant Idle" type="Sprite" parent="cont/cont/viewport/Viewport"]
+[node name="icon" type="Sprite" parent="cont/cont/viewport/Viewport"]
 position = Vector2( 32, 32 )
 texture = ExtResource( 1 )
 
