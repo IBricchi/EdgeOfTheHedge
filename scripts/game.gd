@@ -9,7 +9,8 @@ export var cam_speed = 300
 
 onready var ui = $UI
 
-var ant_home : Vector2 = Vector2(600,500)
+var ant_home : Vector2 = Vector2(200,150)
+var markers : Array = []
 
 func _ready():
 	cam.limit_right = 2040
@@ -19,21 +20,24 @@ func _ready():
 
 	ui.connect("birth_ant", self, "on_birth_ant")
 	
-	randomize()
-	for i in range(4):
-		var ant1 = ant.instance()
-		add_child(ant1)
-		ant1.translate( ant_home)
-		ant1.set_ant_home(ant_home)
-	
 	var q = queen.instance()
 	add_child(q)
 	q.translate(ant_home)
+	
+	randomize()
+	for i in range(10):
+		var ant1 = ant.instance()
+		add_child(ant1)
+		ant1.modulate = Color(1,1,0)
+		ant1.scale /= 2
+		ant1.translate( ant_home)
+		ant1.set_ant_home(q)
+	
 		
 	for i in range(200):
 		var lett = lettuce.instance()
 		add_child(lett)
-		while lett.move_and_collide(Vector2(1,1)) :
+		while lett.move_and_collide(Vector2(10,10)) or lett.move_and_collide(-Vector2(10,10)) :
 			var try_position = Vector2(randi()%2000 , randi() %1100)
 			lett.translate(try_position)
 
