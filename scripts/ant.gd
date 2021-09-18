@@ -1,12 +1,12 @@
 extends KinematicBody2D
 
-
 onready var idle_sprite : AnimatedSprite = $"Basic Ant Idle"
 onready var walk_sprite : AnimatedSprite = $"Basic Ant Walk"
 onready var sensor_area : Area2D = $Area2D
 onready var sensor : CollisionPolygon2D = $"Area2D/AntSensor"
 onready var ray : RayCast2D = $Collisionray
 
+var context;
 
 var desired_direction : Vector2 = Vector2.ZERO
 var home : Node setget set_ant_home 
@@ -113,7 +113,8 @@ func set_ant_home(vect):
 	home = Node2D.new()
 	home.position = vect
 	
-	
+func set_context(context):
+	self.context = context
 	
 func check_sensors():
 	# set closest lettuce as focus

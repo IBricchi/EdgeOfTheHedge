@@ -4,6 +4,7 @@ var ant : Resource = preload("res://scenes/ant.tscn")
 var lettuce : Resource = preload("res://scenes/lettuce.tscn")
 onready var cam : Camera2D = $Camera2D
 
+onready var ui = $UI
 
 var ant_home : Vector2 = Vector2(600,500)
 
@@ -12,6 +13,9 @@ func _ready():
 	cam.limit_bottom = 1150
 	cam.limit_top = 0 
 	cam.limit_left = 0
+
+	ui.connect("birth_ant", self, "on_birth_ant")
+	
 	randomize()
 	for i in range(4):
 		var ant1 = ant.instance()
@@ -25,7 +29,7 @@ func _ready():
 		while lett.move_and_collide(Vector2(1,1)):
 			var try_position = Vector2(randi()%2000 , randi() %1100)
 			lett.translate(try_position)
-		
+
 func _process(delta):
 	if Input.is_action_pressed("camera_bottom"):
 		cam.position.y += 200*delta
@@ -35,3 +39,10 @@ func _process(delta):
 		cam.position.x += 200*delta
 	if Input.is_action_pressed("camera_top"):
 		cam.position.y -= 200 *delta
+
+func on_birth_ant(context):
+	var ant_inst = ant.instance()
+	add_child(ant_inst)
+	ant_inst.translate(ant_home)
+	ant_inst.set_ant_home(ant_home)
+	ant_inst.set_context(context)

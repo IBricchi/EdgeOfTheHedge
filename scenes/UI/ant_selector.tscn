@@ -124,10 +124,10 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="cont/cont/controls/birth"]
 margin_left = 9.0
-margin_right = 52.0
+margin_right = 33.0
 margin_bottom = 14.0
 size_flags_vertical = 1
-text = "Gather"
+text = "£10"
 align = 1
 valign = 1
 __meta__ = {

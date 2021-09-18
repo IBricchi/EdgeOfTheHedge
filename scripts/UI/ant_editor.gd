@@ -23,7 +23,7 @@ func open_for(ant):
 	strength.value = ant.strength
 
 func on_update_speed(val):
-	self.ant.speed = speed.value	
+	self.ant.speed = val
 
 func on_update_strength(val):
-	self.ant.strength = strength.value
+	self.ant.strength = val
