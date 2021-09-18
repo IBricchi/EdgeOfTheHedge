@@ -17,6 +17,7 @@ func gets_eaten():
 	resize_according_to_value()
 	if not nom_nom_value:
 		get_parent().remove_child(self)
+		
 		queue_free()
 
 

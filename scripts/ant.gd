@@ -10,7 +10,7 @@ onready var ray : RayCast2D = $Collisionray
 
 var desired_direction : Vector2 = Vector2.ZERO
 var home : Node setget set_ant_home 
-var speed : float = 1
+var speed : float = rand_range(2,4)
 
 
 
@@ -28,6 +28,8 @@ enum activity {
 
 var ant_priority : int = priority.find_food
 var focus : Node = null # focus is the node the ant wants to get to, food, enemy, home, etc
+var focus_position : Vector2 
+
 
 func _ready():
 	randomize()
@@ -39,27 +41,30 @@ func _ready():
 func _physics_process(delta):
 	# if the ant is moving
 	if ant_priority != priority.idle :
-		if focus :
-			var to_focus : Vector2 = focus.position - self.position
+		if focus != null:
+			var to_focus : Vector2 = focus_position - position
 			desired_direction = (desired_direction + 0.1 * speed* delta*to_focus).normalized()
-		
-		# check ray collision 
-		#var raycollision = check_collision_ray(delta)
-		#if raycollision:
-		#	desired_direction =  (desired_direction + pow(-1, randi()%2) * (Vector2(raycollision.y, -raycollision.x).normalized())).normalized()
+		 
 		
 		var move_collision_result = move_and_collide( desired_direction * speed)
 		# if the ant collides stop moving
 		if move_collision_result:
-			desired_direction = Vector2(0,0)
+			if move_collision_result.collider.is_in_group("Food"):
+				focus = move_collision_result.collider
 			if move_collision_result.collider == focus:
 				focus_reached()
-			return
+				return
+			# collide off the wall
+			if move_collision_result.collider.is_in_group("hedge"):
+				desired_direction = pow(-1, randi()%2)*Vector2(desired_direction.y, -desired_direction.x)
+				focus = null 
 		# make sure the walk animation is playing and make sure the animation is playing at the correct speed
 		if not walk_sprite.visible:
 			walk_sprite.visible = true
 			idle_sprite.visible = false
-		walk_sprite.frames.set_animation_speed("Walk", 24* desired_direction.length())
+			
+			
+		walk_sprite.frames.set_animation_speed("Walk", 24* speed)
 		# rotate the ant
 		look_at(position + desired_direction)
 		
@@ -72,10 +77,12 @@ func _physics_process(delta):
 			var min_dist : float = 3.402823e+38 # positive infinity (actually using INF doesn't work and I have no idea why)
 			for body in sensor_area.get_overlapping_bodies():
 				if body.is_in_group("Food"):
-					var dist : Vector2 = body.position - self.position
-					if dist.length() < min_dist : 
-						focus = body
-						min_dist = dist.length()
+					if body.nom_nom_value > 0:
+						var dist : Vector2 = body.position - self.position
+						if dist.length() < min_dist : 
+							focus = body
+							focus_position = body.position
+							min_dist = dist.length()
 						
 	# if the ant isnt moving play the idle animation		
 	else:
@@ -92,16 +99,17 @@ func check_collision_ray(delta : float):
 	# rotate the collision ray and check if it hits something, if it does return vector to it 
 	ray.rotation += PI * delta * 2 # rotate once a second	
 	if ray.is_colliding():
-		if focus and  (ray.get_collision_point() - focus.position).length() > 25:
+		if focus and  (ray.get_collision_point() - focus_position).length() > 25:
 			return ray.get_collision_point() - self.position 
 		
 func focus_reached():
 	if focus.is_in_group("Food"):
 		focus.gets_eaten()
-	focus = home
-	
+		focus = home
+	else: 
+		focus = null
 	#rotation -= PI
-	var to_focus : Vector2 = focus.position - self.position
+	var to_focus : Vector2 = focus_position - self.position
 	desired_direction = to_focus.normalized()
 
 func set_ant_home(vect):
