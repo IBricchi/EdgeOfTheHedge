@@ -8,6 +8,22 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Control",
+"class": "AntSelector",
+"language": "GDScript",
+"path": "res://scripts/UI/ant_selector.gd"
+}, {
+"base": "CanvasLayer",
+"class": "UI",
+"language": "GDScript",
+"path": "res://scripts/UI.gd"
+} ]
+_global_script_class_icons={
+"AntSelector": "",
+"UI": ""
+}
+
 [application]
 
 config/name="EdgeOfTheHedge"
