@@ -112,10 +112,14 @@ func focus_reached():
 func set_ant_home(vect):
 	home = Node2D.new()
 	home.position = vect
-	
+
 func set_context(context):
-	self.context = context
-	
+	context.connect("context_update", self, "update_context")
+	update_context(context)
+
+func update_context(context):
+	modulate = context.color
+
 func check_sensors():
 	# set closest lettuce as focus
 	var min_dist : float = 3.402823e+38 # positive infinity (actually using INF doesn't work and I have no idea why)

@@ -3,6 +3,7 @@ class_name AntSelector
 
 signal open_ant_editor(ant)
 signal birth_ant(ant)
+signal context_update(ant)
 
 enum Mode{
 	gather,
@@ -10,20 +11,39 @@ enum Mode{
 	attack
 }
 
-# color
-
 # cost
 var cost setget set_cost
 onready var cost_label = $cont/cont/controls/birth/Label
 func set_cost(val):
 	cost = val
-	cost_label.text = "£{0}".format([val])	
+	cost_label.text = "£{0}".format([val])
+	emit_signal("context_update", self)
+
+# hunger
+var hunger setget set_hunger
+func set_hunger(val):
+	hunger = val
+	emit_signal("context_update", self)
+
+# color
+var color setget set_color
+onready var icon = $cont/cont/viewport/Viewport/icon
+func set_color(val):
+	color = val
+	icon.modulate = val
+	emit_signal("context_update", self)
 
 # speed
-var speed
+var speed setget set_speed
+func set_speed(val):
+	speed = val
+	emit_signal("context_update", self)
 
 # strength
-var strength
+var strength setget set_strength
+func set_strength(val):
+	strength = val
+	emit_signal("context_update", self)
 
 # mode
 var mode = Mode.gather setget set_mode
@@ -35,6 +55,7 @@ func set_mode(val):
 		Mode.gather: mode_label.text = "Gather"
 		Mode.patrol: mode_label.text = "Patrol"
 		Mode.attack: mode_label.text = "Attack"
+	emit_signal("context_update", self)
 
 onready var viewport = $cont/cont/viewport
 
@@ -46,6 +67,8 @@ onready var birth_button = $cont/cont/controls/birth/cont/Button
 
 func _ready():
 	self.cost = 10
+	self.hunger = 10
+	self.color = Color.from_hsv(0,1,1)
 	self.speed = 10
 	self.strength = 10
 	self.mode = Mode.gather
