@@ -1,0 +1,118 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/UI/ant_editor.gd" type="Script" id=1]
+[ext_resource path="res://assets/KenneyUI/PNG/White/1x/cross.png" type="Texture" id=2]
+
+[node name="AntEditor" type="Control"]
+anchor_left = 0.263
+anchor_top = 0.22
+anchor_right = 0.737
+anchor_bottom = 0.78
+margin_left = -7.31201
+margin_top = -7.00002
+margin_right = 0.311951
+margin_bottom = -3.05176e-05
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="panel" type="PanelContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -250.0
+margin_top = -175.0
+margin_right = 250.0
+margin_bottom = 175.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cont" type="MarginContainer" parent="panel"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 493.0
+margin_bottom = 343.0
+custom_constants/margin_right = 30
+custom_constants/margin_top = 20
+custom_constants/margin_left = 30
+custom_constants/margin_bottom = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="cont" type="VBoxContainer" parent="panel/cont"]
+margin_left = 30.0
+margin_top = 20.0
+margin_right = 456.0
+margin_bottom = 316.0
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="CenterContainer" parent="panel/cont/cont"]
+margin_right = 426.0
+margin_bottom = 14.0
+
+[node name="Label" type="Label" parent="panel/cont/cont/title"]
+margin_left = 196.0
+margin_right = 230.0
+margin_bottom = 14.0
+text = "Ant 1"
+
+[node name="controls" type="HBoxContainer" parent="panel/cont/cont"]
+margin_top = 24.0
+margin_right = 426.0
+margin_bottom = 66.0
+custom_constants/separation = 20
+
+[node name="labels" type="VBoxContainer" parent="panel/cont/cont/controls"]
+margin_right = 57.0
+margin_bottom = 42.0
+custom_constants/separation = 10
+
+[node name="speed" type="Label" parent="panel/cont/cont/controls/labels"]
+margin_right = 57.0
+margin_bottom = 14.0
+text = "Speed:"
+align = 2
+
+[node name="strength" type="Label" parent="panel/cont/cont/controls/labels"]
+margin_top = 24.0
+margin_right = 57.0
+margin_bottom = 38.0
+text = "Strength:"
+align = 2
+
+[node name="vals" type="VBoxContainer" parent="panel/cont/cont/controls"]
+margin_left = 77.0
+margin_right = 426.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+custom_constants/separation = 10
+
+[node name="speed" type="HSlider" parent="panel/cont/cont/controls/vals"]
+margin_right = 349.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+
+[node name="strength" type="HSlider" parent="panel/cont/cont/controls/vals"]
+margin_top = 26.0
+margin_right = 349.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+
+[node name="exit" type="Button" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -40.0
+margin_bottom = 40.0
+icon = ExtResource( 2 )
+flat = true
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
