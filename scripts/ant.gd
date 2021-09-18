@@ -13,6 +13,8 @@ var home : Node setget set_ant_home
 var speed : float = rand_range(2,4)
 
 
+var hunger_max : float = rand_range(15.0,20.0)
+var hunger : float = hunger_max
 
 enum priority {
 	find_food = 0, 
@@ -21,10 +23,6 @@ enum priority {
 	run_away = 3
 }
 
-enum activity {
-	walking,
-	idle
-}
 
 var ant_priority : int = priority.find_food
 var focus : Node = null # focus is the node the ant wants to get to, food, enemy, home, etc
@@ -39,8 +37,11 @@ func _ready():
 	
 
 func _physics_process(delta):
+	hunger -= delta
 	# if the ant is moving
 	if ant_priority != priority.idle :
+		
+		
 		if focus != null:
 			var to_focus : Vector2 = focus_position - position
 			desired_direction = (desired_direction + 0.1 * speed* delta*to_focus).normalized()
@@ -70,8 +71,9 @@ func _physics_process(delta):
 		look_at(position + desired_direction)
 		
 		if focus == home:
-			if (home.position - position).length() < 5:
+			if (home.position - position).length() < 50:
 				reached_home()
+				print("reached home")
 		
 		if not focus and ant_priority == priority.find_food : 
 			check_sensors()
@@ -81,6 +83,10 @@ func _physics_process(delta):
 			walk_sprite.visible = false
 			idle_sprite.visible = true
 			
+	if hunger < 0 : 
+		ant_death()
+		
+		
 		
 func check_collision_ray(delta : float):
 	# rotate the collision ray and check if it hits something, if it does return vector to it 
@@ -94,6 +100,7 @@ func focus_reached():
 	if focus.is_in_group("Food"):
 		focus.gets_eaten()
 		focus = home
+		print("going home")
 	else: 
 		focus = null
 	#rotation -= PI
@@ -110,19 +117,26 @@ func set_ant_home(vect):
 	
 func check_sensors():
 	# set closest lettuce as focus
-			var min_dist : float = 3.402823e+38 # positive infinity (actually using INF doesn't work and I have no idea why)
-			for body in sensor_area.get_overlapping_bodies():
-				if body.is_in_group("Food"):
-					if body.nom_nom_value > 0:
-						var dist : Vector2 = body.position - self.position
-						if dist.length() < min_dist : 
-							focus = body
-							focus_position = body.position
-							min_dist = dist.length()
-						
+	var min_dist : float = 3.402823e+38 # positive infinity (actually using INF doesn't work and I have no idea why)
+	for body in sensor_area.get_overlapping_bodies():
+		if body.is_in_group("Food"):
+			if body.nom_nom_value > 0:
+				var dist : Vector2 = body.position - self.position
+				if dist.length() < min_dist : 
+					focus = body
+					focus_position = body.position
+					min_dist = dist.length()
+					
 	
+	
+func ant_death():
+	self.modulate = Color(0.2,0.2,0.2)
+	desired_direction = Vector2.ZERO
+	speed = 0
+	# queue_free
 	
 func reached_home():
+	hunger = hunger_max
 	focus = null
 	# bounce back in the same desired_direction that the ant came from plusminus pi/2
 	var rand_angle = atan(desired_direction.y / desired_direction.x) +  rand_range(PI/2, 3/2*PI)
