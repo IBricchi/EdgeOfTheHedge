@@ -41,11 +41,10 @@ func _physics_process(delta):
 	# if the ant is moving
 	if ant_priority != priority.idle :
 		
-		
 		if focus != null:
-			var to_focus : Vector2 = focus_position - position
-			desired_direction = (desired_direction + 0.1 * speed* delta*to_focus).normalized()
-		 
+			var to_focus : Vector2 = (focus_position - position).normalized()
+			desired_direction = (desired_direction +  delta*speed*to_focus).normalized()
+
 		
 		var move_collision_result = move_and_collide( desired_direction * speed)
 		# if the ant collides stop moving
@@ -57,7 +56,6 @@ func _physics_process(delta):
 				return
 			# collide off the wall
 			if move_collision_result.collider.is_in_group("hedge"):
-				print("hedge")
 				desired_direction = pow(-1, randi()%2)*Vector2(desired_direction.y, -desired_direction.x)
 				focus = null 
 		# make sure the walk animation is playing and make sure the animation is playing at the correct speed
@@ -71,9 +69,8 @@ func _physics_process(delta):
 		look_at(position + desired_direction)
 		
 		if focus == home:
-			if (home.position - position).length() < 50:
+			if (home.position - position).length() < 1000:
 				reached_home()
-				print("reached home")
 		
 		if not focus and ant_priority == priority.find_food : 
 			check_sensors()
@@ -85,6 +82,8 @@ func _physics_process(delta):
 			
 	if hunger < 0 : 
 		ant_death()
+	if hunger < hunger_max / 2 :
+		focus = home
 		
 		
 		
@@ -138,6 +137,8 @@ func ant_death():
 	self.modulate = Color(0.2,0.2,0.2)
 	desired_direction = Vector2.ZERO
 	speed = 0
+	walk_sprite.frames.set_animation_speed("Walk", 0)
+	idle_sprite.frames.set_animation_speed("Idle", 0)
 	# queue_free
 	
 func reached_home():
