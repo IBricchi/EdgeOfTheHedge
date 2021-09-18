@@ -105,7 +105,7 @@ visible = false
 rotation = 1.5708
 frames = SubResource( 19 )
 animation = "Walk"
-frame = 6
+frame = 7
 playing = true
 
 [node name="AntCollision" type="CollisionPolygon2D" parent="."]
