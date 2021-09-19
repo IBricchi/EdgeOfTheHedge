@@ -19,6 +19,8 @@ func open_ant_editor(ant: AntSelector):
 func on_birth_ant(ant):
 	emit_signal("birth_ant", ant)
 
+func get_context(idx):
+	return ants[idx]
 
 func display_food(value):
 	$ColonyStats/VBoxContainer/Food/Label.text = "Food: %d Units" % value

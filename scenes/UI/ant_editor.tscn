@@ -48,7 +48,7 @@ __meta__ = {
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 493.0
-margin_bottom = 343.0
+margin_bottom = 360.0
 custom_constants/margin_right = 30
 custom_constants/margin_top = 20
 custom_constants/margin_left = 30
@@ -61,7 +61,7 @@ __meta__ = {
 margin_left = 30.0
 margin_top = 20.0
 margin_right = 456.0
-margin_bottom = 316.0
+margin_bottom = 333.0
 custom_constants/separation = 20
 __meta__ = {
 "_edit_use_anchors_": false
@@ -128,19 +128,26 @@ margin_bottom = 16.0
 custom_fonts/font = SubResource( 2 )
 text = "Cost: "
 
+[node name="hunger_rate" type="Label" parent="panel/cont/cont/info/data_cont/data"]
+margin_top = 31.0
+margin_right = 211.0
+margin_bottom = 47.0
+custom_fonts/font = SubResource( 2 )
+text = "Cost: "
+
 [node name="controls" type="HBoxContainer" parent="panel/cont/cont"]
 margin_top = 193.0
 margin_right = 426.0
-margin_bottom = 261.0
+margin_bottom = 313.0
 custom_constants/separation = 20
 
 [node name="labels" type="VBoxContainer" parent="panel/cont/cont/controls"]
-margin_right = 90.0
-margin_bottom = 68.0
+margin_right = 110.0
+margin_bottom = 120.0
 custom_constants/separation = 10
 
 [node name="color" type="Label" parent="panel/cont/cont/controls/labels"]
-margin_right = 90.0
+margin_right = 110.0
 margin_bottom = 14.0
 custom_fonts/font = SubResource( 3 )
 text = "Color:"
@@ -149,7 +156,7 @@ valign = 1
 
 [node name="speed" type="Label" parent="panel/cont/cont/controls/labels"]
 margin_top = 24.0
-margin_right = 90.0
+margin_right = 110.0
 margin_bottom = 38.0
 custom_fonts/font = SubResource( 3 )
 text = "Speed:"
@@ -158,37 +165,77 @@ valign = 1
 
 [node name="strength" type="Label" parent="panel/cont/cont/controls/labels"]
 margin_top = 48.0
-margin_right = 90.0
+margin_right = 110.0
 margin_bottom = 62.0
 custom_fonts/font = SubResource( 3 )
 text = "Strength:"
 align = 2
 valign = 1
 
+[node name="hunger" type="Label" parent="panel/cont/cont/controls/labels"]
+margin_top = 72.0
+margin_right = 110.0
+margin_bottom = 86.0
+custom_fonts/font = SubResource( 3 )
+text = "Max Hunger:"
+align = 2
+valign = 1
+
+[node name="health" type="Label" parent="panel/cont/cont/controls/labels"]
+margin_top = 96.0
+margin_right = 110.0
+margin_bottom = 110.0
+custom_fonts/font = SubResource( 3 )
+text = "Health:"
+align = 2
+valign = 1
+
 [node name="vals" type="VBoxContainer" parent="panel/cont/cont/controls"]
-margin_left = 110.0
+margin_left = 130.0
 margin_right = 426.0
-margin_bottom = 68.0
+margin_bottom = 120.0
 size_flags_horizontal = 3
 custom_constants/separation = 10
 
 [node name="color" type="HSlider" parent="panel/cont/cont/controls/vals"]
-margin_right = 316.0
+margin_right = 296.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
 max_value = 255.0
 
 [node name="speed" type="HSlider" parent="panel/cont/cont/controls/vals"]
 margin_top = 26.0
-margin_right = 316.0
+margin_right = 296.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
+min_value = 1.0
+value = 1.0
 
 [node name="strength" type="HSlider" parent="panel/cont/cont/controls/vals"]
 margin_top = 52.0
-margin_right = 316.0
+margin_right = 296.0
 margin_bottom = 68.0
 size_flags_horizontal = 3
+min_value = 1.0
+max_value = 20.0
+value = 1.0
+
+[node name="hunger" type="HSlider" parent="panel/cont/cont/controls/vals"]
+margin_top = 78.0
+margin_right = 296.0
+margin_bottom = 94.0
+size_flags_horizontal = 3
+min_value = 5.0
+value = 5.0
+
+[node name="health" type="HSlider" parent="panel/cont/cont/controls/vals"]
+margin_top = 104.0
+margin_right = 296.0
+margin_bottom = 120.0
+size_flags_horizontal = 3
+min_value = 5.0
+max_value = 50.0
+value = 5.0
 
 [node name="exit" type="Button" parent="."]
 anchor_left = 1.0

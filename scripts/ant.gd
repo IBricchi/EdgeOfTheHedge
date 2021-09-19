@@ -14,17 +14,29 @@ var marker_max_time : float = 2
 var markers_set : Array = []
 var marker_follow_timer : float  = 0
 var marker_set_timer : float = 0.4
-var idle_timer :float = 1
+var idle_timer : float = 1
 var desired_direction : Vector2 = Vector2(rand_range(-1,-1),rand_range(-1,1)).normalized()
 var home : Node setget set_ant_home 
-var speed : float = rand_range(50,70)
 var alive : bool = true
 
-var health_max : float = 20
+var speed : float;
+
+var health_max : float = 20 setget set_health_max
 var health : float = health_max
-var food_carried :int = 0
-var hunger_max : float = rand_range(40.0,50.0)
+func set_health_max(val):
+	health = health / health_max * val
+	health_max = val
+
+var hunger_max : float = 20 setget set_hunger_max
 var hunger : float = hunger_max
+var hunger_rate : float = 1
+func set_hunger_max(val):
+	hunger = hunger / hunger_max * val
+	hunger_max = val
+
+var strength
+
+var food_carried :int = 0
 
 enum priority {
 	find_food = 0, 
@@ -42,7 +54,7 @@ func _ready():
 	
 
 func _physics_process(delta):
-	hunger -= delta
+	hunger -= delta * hunger_rate;
 
 	# if the ant is moving
 	if ant_priority != priority.idle :
@@ -100,6 +112,11 @@ func set_context(context):
 
 func update_context(context):
 	modulate = context.color
+	self.speed = context.speed
+	self.hunger_max = context.hunger
+	self.hunger_rate = context.hunger_rate
+	self.strength = context.strength
+	self.health_max = context.health
 
 func check_sensors():
 	if ant_priority == priority.find_food:

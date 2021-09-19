@@ -10,7 +10,7 @@ onready var cost_label = $panel/cont/cont/info/data_cont/data/cost
 func set_cost(val):
 	cost = val
 	ant.cost = val
-	cost_label.text = "Cost: £{0}".format([val])
+	cost_label.text = "Cost: %d" % val
 
 # color
 var color setget set_color
@@ -23,17 +23,23 @@ func set_color(val):
 
 # hunger
 var hunger setget set_hunger
-onready var hunger_label = $panel/cont/cont/info/data_cont/data/hunger
+onready var hunger_slider = $panel/cont/cont/controls/vals/hunger
 func set_hunger(val):
-	hunger = val
-	ant.hunger = val;
-	hunger_label.text = "Hunger: £{0}".format([val])
+	hunger = val / hunger_slider.max_value
+	ant.hunger = val
+	compute_data()
+var hunger_rate setget set_hunger_rate
+onready var hunger_rate_label = $panel/cont/cont/info/data_cont/data/hunger_rate
+func set_hunger_rate(val):
+	hunger_rate = val
+	ant.hunger_rate = val;
+	hunger_rate_label.text = "Hunger: %.2fu/s" % val
 
 # speed
 var speed setget set_speed
 onready var speed_slider = $panel/cont/cont/controls/vals/speed
 func set_speed(val):
-	speed = val
+	speed = val / speed_slider.max_value
 	ant.speed = val
 	compute_data()
 
@@ -41,8 +47,16 @@ func set_speed(val):
 var strength setget set_strength
 onready var strength_slider = $panel/cont/cont/controls/vals/strength
 func set_strength(val):
-	strength = val
+	strength = val / strength_slider.max_value
 	ant.strength = val
+	compute_data()
+
+# health
+var health setget set_health
+onready var health_slider = $panel/cont/cont/controls/vals/health
+func set_health(val):
+	health = val / health_slider.max_value
+	ant.health = val
 	compute_data()
 
 func _ready():
@@ -50,6 +64,8 @@ func _ready():
 	color_slider.connect("value_changed", self, "on_update_color")
 	speed_slider.connect("value_changed", self, "on_update_speed")
 	strength_slider.connect("value_changed", self, "on_update_strength")
+	hunger_slider.connect("value_changed", self, "on_update_hunger")
+	health_slider.connect("value_changed", self, "on_update_health")
 
 func on_close():
 	visible = false
@@ -58,12 +74,19 @@ onready var title = $panel/cont/cont/title/Label
 func open_for(ant):
 	visible = true
 	self.ant = ant;
+#	IMPORTANT DO NOT DO SELF.VARIABLE so not to actiavte setter function
 	color = ant.color
 	speed = ant.speed
 	strength = ant.strength
+	health = ant.health
+	hunger = ant.hunger
+	
 	title.text = ant.name
-	speed_slider.value = ant.speed
-	strength_slider.value = ant.strength
+	color_slider.value = color.h * 255
+	speed_slider.value = speed
+	strength_slider.value = strength
+	health_slider.value = health
+	hunger_slider.value = hunger
 	compute_data()
 
 func on_update_color(val):
@@ -75,8 +98,12 @@ func on_update_speed(val):
 func on_update_strength(val):
 	self.strength = val
 
-const speed_cost = 0.5
-const strength_cost = 0.4
+func on_update_hunger(val):
+	self.hunger = val
+
+func on_update_health(val):
+	self.health = val
+
 func compute_data():
-	self.cost = speed_cost * self.speed + strength_cost * self.strength
-	
+	self.cost = (self.speed + self.strength + self.hunger + self.health) * 25
+	self.hunger_rate = (self.speed + self.strength + self.health) / 3 * 2

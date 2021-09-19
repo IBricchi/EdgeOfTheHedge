@@ -25,6 +25,11 @@ func set_hunger(val):
 	hunger = val
 	emit_signal("context_update", self)
 
+var hunger_rate setget set_hunger_rate
+func set_hunger_rate(val):
+	hunger_rate = val
+	emit_signal("context_update", self)
+
 # color
 var color setget set_color
 onready var icon = $cont/cont/viewport/Viewport/icon
@@ -43,6 +48,12 @@ func set_speed(val):
 var strength setget set_strength
 func set_strength(val):
 	strength = val
+	emit_signal("context_update", self)
+
+# health
+var health setget set_health
+func set_health(val):
+	health = val
 	emit_signal("context_update", self)
 
 # mode
@@ -68,9 +79,11 @@ onready var birth_button = $cont/cont/controls/birth/cont/Button
 func _ready():
 	self.cost = 10
 	self.hunger = 10
-	self.color = Color.from_hsv(0,1,1)
-	self.speed = 10
+	self.hunger_rate = 1
+	self.color = Color.from_hsv(0.01,1,1)
+	self.speed = 30
 	self.strength = 10
+	self.health = 10
 	self.mode = Mode.gather
 	
 	edit_button.connect("button_up", self, "on_edit_pressed")
