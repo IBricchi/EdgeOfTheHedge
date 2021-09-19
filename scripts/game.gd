@@ -1,12 +1,13 @@
 extends Node2D
 
 var ant : Resource = preload("res://scenes/ant.tscn")
-var lettuce : Resource = preload("res://scenes/lettuce.tscn")
 onready var cam : Camera2D = $Camera2D
 
 export var cam_speed = 300
 
 onready var ui = $UI
+
+onready var lett_spawner = $LettuceSpawner
 
 var ant_home : Vector2 = Vector2(600,500)
 
@@ -18,19 +19,15 @@ func _ready():
 
 	ui.connect("birth_ant", self, "on_birth_ant")
 	
-	randomize()
 	for i in range(4):
 		var ant1 = ant.instance()
 		add_child(ant1)
 		ant1.translate( ant_home)
 		ant1.set_ant_home(ant_home)
-		
-	for i in range(200):
-		var lett = lettuce.instance()
-		add_child(lett)
-		while lett.move_and_collide(Vector2(1,1)) :
-			var try_position = Vector2(randi()%2000 , randi() %1100)
-			lett.translate(try_position)
+	
+	lett_spawner.setup(0,2048,0,1152,10,50,10)
+	for n in 5:
+		lett_spawner.spawn_bunch()
 
 func _process(delta):
 	if Input.is_action_pressed("camera_bottom"):

@@ -4,7 +4,7 @@ onready var idle_sprite : AnimatedSprite = $"Basic Ant Idle"
 onready var walk_sprite : AnimatedSprite = $"Basic Ant Walk"
 onready var sensor_area : Area2D = $Area2D
 onready var sensor : CollisionPolygon2D = $"Area2D/AntSensor"
-onready var ray : RayCast2D = $Collisionray
+onready var ant_collider : CollisionPolygon2D = $"AntCollision"
 
 var context;
 
@@ -22,7 +22,6 @@ enum priority {
 	fight = 2,
 	run_away = 3
 }
-
 
 var ant_priority : int = priority.find_food
 var focus : Node = null # focus is the node the ant wants to get to, food, enemy, home, etc
@@ -84,29 +83,16 @@ func _physics_process(delta):
 		ant_death()
 	if hunger < hunger_max / 2 :
 		focus = home
-		
-		
-		
-func check_collision_ray(delta : float):
-	# rotate the collision ray and check if it hits something, if it does return vector to it 
-	# gonna use this to detect enemies
-	ray.rotation += PI * delta * 2 # rotate once a second	
-	if ray.is_colliding():
-		if focus and  (ray.get_collision_point() - focus_position).length() > 25:
-			return ray.get_collision_point() - self.position 
-		
+
 func focus_reached():
 	if focus.is_in_group("Food"):
 		focus.gets_eaten()
 		focus = home
-		print("going home")
 	else: 
 		focus = null
 	#rotation -= PI
 	var to_focus : Vector2 = focus_position - self.position
 	desired_direction = to_focus.normalized()
-
-
 
 func set_ant_home(vect):
 	home = Node2D.new()
