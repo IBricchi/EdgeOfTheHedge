@@ -27,8 +27,12 @@ _global_script_class_icons={
 [application]
 
 config/name="EdgeOfTheHedge"
-run/main_scene="res://scenes/game.tscn"
+run/main_scene="res://scenes/title_screen.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Global="*res://scripts/global.gd"
 
 [input]
 

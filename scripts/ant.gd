@@ -8,26 +8,45 @@ onready var ant_collider : CollisionPolygon2D = $"AntCollision"
 
 var marker : Resource = preload("res://scenes/marker.tscn")
 
+signal die
+signal add_food(count)
+
 var context;
 
 var marker_max_time : float = 1
 var markers_set : Array = []
 var marker_follow_timer : float  = 0
 var marker_set_timer : float = 0.4
-var idle_timer :float = 1
+var idle_timer : float = 1
 var desired_direction : Vector2 = Vector2(rand_range(-1,-1),rand_range(-1,1)).normalized()
 var home : Node setget set_ant_home 
 var speed : float = rand_range(80,100)
+
 var alive : bool = true
 var damage_per_second : float = 30
 
 
 
-var health_max : float = 20
+var speed : float;
+
+var health_max : float = 20 setget set_health_max
 var health : float = health_max
-var food_carried :int = 0
-var hunger_max : float = rand_range(70.0,80.0)
+
+func set_health_max(val):
+	health = health / health_max * val
+	health_max = val
+
+var hunger_max : float = 20 setget set_hunger_max
+
 var hunger : float = hunger_max
+var hunger_rate : float = 1
+func set_hunger_max(val):
+	hunger = hunger / hunger_max * val
+	hunger_max = val
+
+var strength
+
+var food_carried :int = 0
 
 enum priority {
 	find_food = 0, 
@@ -45,22 +64,23 @@ func _ready():
 	
 
 func _physics_process(delta):
-	hunger -= delta
+	if alive:
+		hunger -= delta * hunger_rate;
 
-	# if the ant is moving
-	if ant_priority != priority.idle :
-		if ant_priority != priority.go_home :
-			#print(marker_set_timer)
-			marker_set_timer -= delta
-			if marker_set_timer < 0:
-				put_down_marker()
-		else:
-			marker_follow_timer -= delta
-		
-		check_sensor()
+		# if the ant is moving
+		if ant_priority != priority.idle :
+			if ant_priority != priority.go_home :
+				#print(marker_set_timer)
+				marker_set_timer -= delta
+				if marker_set_timer < 0:
+					put_down_marker()
+			else:
+				marker_follow_timer -= delta
+			
+			check_sensor()
 		
 			
-		manage_movement_and_collision( move_and_collide(delta* desired_direction * speed), delta)
+			manage_movement_and_collision( move_and_collide(delta* desired_direction * speed), delta)
 		
 		# make sure the walk animation is playing and make sure the animation is playing at the correct speed
 		if not walk_sprite.visible:
@@ -83,20 +103,37 @@ func _physics_process(delta):
 		if not idle_sprite.visible:
 			walk_sprite.visible = false
 			idle_sprite.visible = true
-			
-	if hunger < 0 or health < 0: 
-		if food_carried == 0 :
-			ant_death()
-		else:
-			food_carried -= 1
-			hunger = hunger_max
-			health = max(health_max, health/2)
-			ant_priority = priority.idle
-	
-	
-	if hunger < hunger_max / 2 or health < health_max/10:
-		priority.go_home
 		
+			# make sure the walk animation is playing and make sure the animation is playing at the correct speed
+			if not walk_sprite.visible:
+				print("walk sprite not visible")
+				walk_sprite.visible = true
+				idle_sprite.visible = false
+			walk_sprite.frames.set_animation_speed("Walk", 24* delta*speed)
+			# rotate the ant
+			look_at(position + desired_direction)
+		
+		else:
+			idle_timer -= delta
+			if idle_timer < 0:
+				ant_priority = priority.go_home
+				idle_timer = 1
+				desired_direction = - desired_direction
+			if not idle_sprite.visible:
+				walk_sprite.visible = false
+				idle_sprite.visible = true
+				
+		if hunger < 0 or health < 0: 
+			if food_carried == 0 :
+				ant_death()
+			else:
+				food_carried -= 1
+				hunger = hunger_max
+				health = max(health_max, health/2)
+				ant_priority = priority.idle
+
+		if hunger < hunger_max / 2 or health < health_max/5:
+			priority.go_home
 
 func set_ant_home(v):
 	home = v
@@ -107,6 +144,11 @@ func set_context(context):
 
 func update_context(context):
 	modulate = context.color
+	self.speed = context.speed
+	self.hunger_max = context.hunger
+	self.hunger_rate = context.hunger_rate
+	self.strength = context.strength
+	self.health_max = context.health
 
 func check_sensor():
 	if ant_priority == priority.find_food:
@@ -158,6 +200,7 @@ func fight(enemyant : Node, delta):
 		desired_direction += position - enemyant.position
 	
 func ant_death():
+	emit_signal("die")
 	self.modulate = Color(0.1,0.1,0.1)
 	desired_direction = Vector2.ZERO
 	speed = 0
@@ -213,8 +256,9 @@ func manage_movement_and_collision(res, delta):
 
 func reached_home():
 	food_carried = 0
-	get_parent().player_food += food_carried
-	get_parent().get_node("UI").display_food(get_parent().player_food)
+
+	emit_signal("add_food", food_carried)
+
 	hunger = hunger_max
 	ant_priority = priority.find_food
 	# bounce back in the same desired_direction that the ant came from plusminus pi/2
