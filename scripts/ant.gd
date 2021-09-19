@@ -8,6 +8,9 @@ onready var ant_collider : CollisionPolygon2D = $"AntCollision"
 
 var marker : Resource = preload("res://scenes/marker.tscn")
 
+signal die
+signal add_food(count)
+
 var context;
 
 var marker_max_time : float = 2
@@ -54,54 +57,53 @@ func _ready():
 	
 
 func _physics_process(delta):
-	hunger -= delta * hunger_rate;
+	if alive:
+		hunger -= delta * hunger_rate;
 
-	# if the ant is moving
-	if ant_priority != priority.idle :
-		if ant_priority != priority.go_home :
-			#print(marker_set_timer)
-			marker_set_timer -= delta
-			if marker_set_timer < 0:
-				put_down_marker()
-		else:
-			marker_follow_timer -= delta
-		
-		check_sensors()
+		# if the ant is moving
+		if ant_priority != priority.idle :
+			if ant_priority != priority.go_home :
+				#print(marker_set_timer)
+				marker_set_timer -= delta
+				if marker_set_timer < 0:
+					put_down_marker()
+			else:
+				marker_follow_timer -= delta
 			
-		manage_movement_and_collision( move_and_collide(delta* desired_direction * speed))
-		
-		# make sure the walk animation is playing and make sure the animation is playing at the correct speed
-		if not walk_sprite.visible:
-			print("walk sprite not visible")
-			walk_sprite.visible = true
-			idle_sprite.visible = false
-		walk_sprite.frames.set_animation_speed("Walk", 24* delta*speed)
-		# rotate the ant
-		look_at(position + desired_direction)
+			check_sensors()
+				
+			manage_movement_and_collision( move_and_collide(delta* desired_direction * speed))
+			
+			# make sure the walk animation is playing and make sure the animation is playing at the correct speed
+			if not walk_sprite.visible:
+				print("walk sprite not visible")
+				walk_sprite.visible = true
+				idle_sprite.visible = false
+			walk_sprite.frames.set_animation_speed("Walk", 24* delta*speed)
+			# rotate the ant
+			look_at(position + desired_direction)
 
-	# if the ant isnt moving play the idle animation		
-	else:
-		idle_timer -= delta
-		if idle_timer < 0:
-			ant_priority = priority.go_home
-			idle_timer = 1
-			desired_direction = - desired_direction
-		if not idle_sprite.visible:
-			walk_sprite.visible = false
-			idle_sprite.visible = true
-			
-	if hunger < 0 or health < 0: 
-		if food_carried == 0 :
-			ant_death()
+		# if the ant isnt moving play the idle animation		
 		else:
-			food_carried -= 1
-			hunger = hunger_max
-			health = max(health_max, health/2)
+			idle_timer -= delta
+			if idle_timer < 0:
+				ant_priority = priority.go_home
+				idle_timer = 1
+				desired_direction = - desired_direction
+			if not idle_sprite.visible:
+				walk_sprite.visible = false
+				idle_sprite.visible = true
+				
+		if hunger < 0 or health < 0: 
+			if food_carried == 0 :
+				ant_death()
+			else:
+				food_carried -= 1
+				hunger = hunger_max
+				health = max(health_max, health/2)
 	
-	
-	if hunger < hunger_max / 2 or health < health_max/10:
-		priority.go_home
-		
+		if hunger < hunger_max / 2 or health < health_max/10:
+			priority.go_home
 
 func set_ant_home(v):
 	home = v
@@ -138,6 +140,7 @@ func check_sensors():
 	
 	
 func ant_death():
+	emit_signal("die")
 	self.modulate = Color(0.1,0.1,0.1)
 	desired_direction = Vector2.ZERO
 	speed = 0
@@ -188,8 +191,7 @@ func manage_movement_and_collision(res):
 
 
 func reached_home():
-	get_parent().player_food += food_carried
-	get_parent().get_node("UI").display_food(get_parent().player_food)
+	emit_signal("add_food", food_carried)
 	hunger = hunger_max
 	ant_priority = priority.find_food
 	# bounce back in the same desired_direction that the ant came from plusminus pi/2

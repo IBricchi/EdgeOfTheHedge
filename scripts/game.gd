@@ -10,9 +10,21 @@ onready var lett_spawner = $LettuceSpawner
 
 var ant_home : Vector2 = Vector2(600,500)
 var markers : Array = []
-var player_food : int = 10
+var player_food : int = 10 setget set_player_food
+func set_player_food(val):
+	player_food = val
+	ui.player_food = val
 
 var queen_inst;
+
+var ant_count = 0 setget set_ant_count;
+func set_ant_count(val):
+	ant_count = val
+	ui.population = val
+	if val <= 0:
+		Global.win = false
+		Global.time = ui.time
+		get_tree().change_scene("res://scenes/death_screen.tscn")
 
 func _ready():
 	ui.connect("birth_ant", self, "birth_ant")
@@ -22,7 +34,7 @@ func _ready():
 	queen_inst.translate(ant_home)
 	queen_inst.modulate = Color(1,0.1,0.2)
 
-	for i in 10:
+	for i in 1:
 		birth_ant(ui.get_context(0), true)
 
 	lett_spawner.setup(0,2048,0,1152,10,50,10)
@@ -34,8 +46,17 @@ func birth_ant(context, free = false):
 		if not free:
 			player_food -= context.cost
 		var ant_inst = ant.instance()
+		ant_inst.connect("add_food", self, "on_add_food")
+		ant_inst.connect("die", self, "on_ant_death")
+		self.ant_count += 1
 		add_child(ant_inst)
 		ant_inst.scale /= 2
 		ant_inst.translate(ant_home)
 		ant_inst.set_ant_home(queen_inst)
 		ant_inst.set_context(context)
+
+func on_add_food(count):
+	self.player_food += count
+
+func on_ant_death():
+	self.ant_count -= 1
