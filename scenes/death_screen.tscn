@@ -1,8 +1,16 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/death_screen.gd" type="Script" id=1]
-[ext_resource path="res://Assets/FontResource/ui-label.tres" type="DynamicFont" id=2]
-[ext_resource path="res://Assets/FontResource/subtitle.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/fonts/PressStart2P/PressStart2P-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://assets/fonts/RubixBeastly/RubikBeastly-Regular.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 35
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 27
+font_data = ExtResource( 2 )
 
 [node name="death_screen" type="MarginContainer"]
 anchor_right = 1.0
@@ -26,17 +34,17 @@ size_flags_vertical = 3
 
 [node name="title" type="CenterContainer" parent="cont"]
 margin_right = 994.0
-margin_bottom = 402.0
+margin_bottom = 413.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="cont/title"]
-margin_left = 239.0
-margin_top = 120.0
-margin_right = 754.0
-margin_bottom = 281.0
-custom_fonts/font = ExtResource( 3 )
+margin_left = 205.0
+margin_top = 118.0
+margin_right = 788.0
+margin_bottom = 295.0
+custom_fonts/font = SubResource( 1 )
 text = "You ran out of money in 1 turns.
 
 This led to your immediate
@@ -44,7 +52,7 @@ spontaneous combustion."
 align = 1
 
 [node name="cont" type="MarginContainer" parent="cont"]
-margin_top = 406.0
+margin_top = 417.0
 margin_right = 994.0
 margin_bottom = 570.0
 custom_constants/margin_top = 60
@@ -53,36 +61,36 @@ custom_constants/margin_bottom = 60
 [node name="options" type="HBoxContainer" parent="cont/cont"]
 margin_top = 60.0
 margin_right = 994.0
-margin_bottom = 104.0
+margin_bottom = 93.0
 mouse_filter = 2
 size_flags_horizontal = 3
 
 [node name="menu" type="CenterContainer" parent="cont/cont/options"]
 margin_right = 495.0
-margin_bottom = 44.0
+margin_bottom = 33.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="button" type="Button" parent="cont/cont/options/menu"]
-margin_left = 152.0
-margin_right = 342.0
-margin_bottom = 44.0
-custom_fonts/font = ExtResource( 2 )
+margin_left = 120.0
+margin_right = 375.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 2 )
 text = "Main Menu"
 flat = true
 
 [node name="play" type="CenterContainer" parent="cont/cont/options"]
 margin_left = 499.0
 margin_right = 994.0
-margin_bottom = 44.0
+margin_bottom = 33.0
 mouse_filter = 2
 size_flags_horizontal = 3
 
 [node name="button" type="Button" parent="cont/cont/options/play"]
-margin_left = 158.0
-margin_right = 337.0
-margin_bottom = 44.0
-custom_fonts/font = ExtResource( 2 )
+margin_left = 106.0
+margin_right = 388.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 2 )
 text = "Start Over"
 flat = true

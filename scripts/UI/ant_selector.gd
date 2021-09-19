@@ -77,14 +77,15 @@ onready var edit_button = $cont/edit/cont/Button
 onready var birth_button = $cont/cont/controls/birth/cont/Button
 
 func _ready():
-	self.cost = 10
-	self.hunger = 10
+	self.hunger = 15
 	self.hunger_rate = 1
 	self.color = Color.from_hsv(0.01,1,1)
-	self.speed = 30
-	self.strength = 10
-	self.health = 10
+	self.speed = 20
+	self.strength = 1
+	self.health = 5
 	self.mode = Mode.gather
+	
+	$cont/cont/controls/Label.text = name
 	
 	edit_button.connect("button_up", self, "on_edit_pressed")
 	mode_button.connect("button_up", self, "on_switch_mode")

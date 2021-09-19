@@ -1,13 +1,22 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/Basic Ant Idle.png" type="Texture" id=1]
 [ext_resource path="res://assets/KenneyUI/PNG/White/2x/plus.png" type="Texture" id=2]
 [ext_resource path="res://assets/KenneyUI/PNG/White/2x/return.png" type="Texture" id=3]
 [ext_resource path="res://scripts/UI/ant_selector.gd" type="Script" id=4]
 [ext_resource path="res://assets/KenneyUI/PNG/White/2x/larger.png" type="Texture" id=5]
+[ext_resource path="res://assets/fonts/PressStart2P/PressStart2P-Regular.ttf" type="DynamicFontData" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.219608 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 23
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 15
+font_data = ExtResource( 6 )
 
 [node name="Ant1" type="PanelContainer"]
 anchor_left = 0.5
@@ -25,7 +34,7 @@ __meta__ = {
 }
 
 [node name="cont" type="MarginContainer" parent="."]
-margin_right = 156.0
+margin_right = 209.0
 margin_bottom = 84.0
 custom_constants/margin_right = 10
 custom_constants/margin_top = 10
@@ -35,7 +44,7 @@ custom_constants/margin_bottom = 10
 [node name="cont" type="HBoxContainer" parent="cont"]
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 146.0
+margin_right = 199.0
 margin_bottom = 74.0
 custom_constants/separation = 20
 
@@ -56,30 +65,31 @@ texture = ExtResource( 1 )
 
 [node name="controls" type="VBoxContainer" parent="cont/cont"]
 margin_left = 84.0
-margin_right = 136.0
+margin_right = 189.0
 margin_bottom = 64.0
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="cont/cont/controls"]
-margin_right = 52.0
-margin_bottom = 14.0
-text = "Ant 1"
+margin_right = 105.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 2 )
+text = "Ant1"
 align = 1
 
 [node name="mode" type="HBoxContainer" parent="cont/cont/controls"]
-margin_top = 18.0
-margin_right = 52.0
-margin_bottom = 32.0
+margin_top = 27.0
+margin_right = 105.0
+margin_bottom = 42.0
 custom_constants/separation = 9
 
 [node name="cont" type="AspectRatioContainer" parent="cont/cont/controls/mode"]
-margin_bottom = 14.0
+margin_bottom = 15.0
 stretch_mode = 1
 
 [node name="Button" type="TextureButton" parent="cont/cont/controls/mode/cont"]
-margin_left = -7.0
-margin_right = 7.0
-margin_bottom = 14.0
+margin_left = -7.5
+margin_right = 7.5
+margin_bottom = 15.0
 texture_normal = ExtResource( 3 )
 texture_pressed = ExtResource( 3 )
 texture_hover = ExtResource( 3 )
@@ -90,9 +100,10 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="cont/cont/controls/mode"]
 margin_left = 9.0
-margin_right = 52.0
-margin_bottom = 14.0
+margin_right = 99.0
+margin_bottom = 15.0
 size_flags_vertical = 1
+custom_fonts/font = SubResource( 3 )
 text = "Gather"
 align = 1
 valign = 1
@@ -101,19 +112,19 @@ __meta__ = {
 }
 
 [node name="birth" type="HBoxContainer" parent="cont/cont/controls"]
-margin_top = 36.0
-margin_right = 52.0
-margin_bottom = 50.0
+margin_top = 46.0
+margin_right = 105.0
+margin_bottom = 61.0
 custom_constants/separation = 9
 
 [node name="cont" type="AspectRatioContainer" parent="cont/cont/controls/birth"]
-margin_bottom = 14.0
+margin_bottom = 15.0
 stretch_mode = 1
 
 [node name="Button" type="TextureButton" parent="cont/cont/controls/birth/cont"]
-margin_left = -7.0
-margin_right = 7.0
-margin_bottom = 14.0
+margin_left = -7.5
+margin_right = 7.5
+margin_bottom = 15.0
 texture_normal = ExtResource( 2 )
 texture_pressed = ExtResource( 2 )
 texture_hover = ExtResource( 2 )
@@ -124,9 +135,10 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="cont/cont/controls/birth"]
 margin_left = 9.0
-margin_right = 33.0
-margin_bottom = 14.0
+margin_right = 54.0
+margin_bottom = 15.0
 size_flags_vertical = 1
+custom_fonts/font = SubResource( 3 )
 text = "£10"
 align = 1
 valign = 1
@@ -137,7 +149,7 @@ __meta__ = {
 [node name="edit" type="AspectRatioContainer" parent="cont"]
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 146.0
+margin_right = 199.0
 margin_bottom = 74.0
 stretch_mode = 1
 alignment_horizontal = 0
