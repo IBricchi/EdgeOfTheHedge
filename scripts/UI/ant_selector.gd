@@ -77,8 +77,8 @@ onready var edit_button = $cont/edit/cont/Button
 onready var birth_button = $cont/cont/controls/birth/cont/Button
 
 func _ready():
-	self.cost = 10
-	self.hunger = 10
+	self.cost = 25
+	self.hunger = 40
 	self.hunger_rate = 1
 	self.color = Color.from_hsv(0.01,1,1)
 	self.speed = 30

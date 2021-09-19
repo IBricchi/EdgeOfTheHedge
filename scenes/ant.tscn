@@ -99,7 +99,7 @@ script = ExtResource( 3 )
 rotation = 1.5708
 frames = SubResource( 6 )
 animation = "Idle"
-frame = 4
+frame = 3
 playing = true
 
 [node name="Basic Ant Walk" type="AnimatedSprite" parent="."]
@@ -107,12 +107,12 @@ visible = false
 rotation = 1.5708
 frames = SubResource( 19 )
 animation = "Walk"
-frame = 4
+frame = 1
 playing = true
 
 [node name="AntCollision" type="CollisionPolygon2D" parent="."]
 visible = false
-polygon = PoolVector2Array( -32, -8, -32, 8, 32, 16, 32, -16 )
+polygon = PoolVector2Array( -8, -8, -8, 8, 32, 16, 32, -16 )
 
 [node name="Area2D" type="Area2D" parent="."]
 rotation = 1.5708
@@ -123,9 +123,6 @@ collision_mask = 2
 scale = Vector2( 3, 3 )
 polygon = PoolVector2Array( -4.6734, -0.175896, 5.0656, -0.363182, 96, -32, 56, -112, -6.99382e-06, -160, -56, -112, -96, -32 )
 
-[node name="fightarea" type="Area2D" parent="."]
-collision_layer = 513
-collision_mask = 513
+[node name="Timer" type="Timer" parent="."]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="fightarea"]
-polygon = PoolVector2Array( 48, 24, 48, -24, -32, -16, -32, 16 )
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
