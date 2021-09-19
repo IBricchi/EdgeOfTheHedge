@@ -41,7 +41,9 @@ collision_mask = 31
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+rotation = 1.5708
 frames = SubResource( 6 )
 animation = "queen"
+frame = 1
 speed_scale = 0.5
 playing = true
