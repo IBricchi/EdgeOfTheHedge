@@ -3,7 +3,7 @@
 [ext_resource path="res://scripts/marker.gd" type="Script" id=1]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 24.0
+radius = 8.0
 
 [node name="marker" type="Area2D"]
 script = ExtResource( 1 )
@@ -12,6 +12,7 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+visible = false
 polygon = PoolVector2Array( -8, -8, -8, 8, 8, 8, 8, -8 )
 
 [node name="Timer" type="Timer" parent="."]

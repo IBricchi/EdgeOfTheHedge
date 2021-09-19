@@ -11,6 +11,8 @@ onready var ui = $UI
 
 var ant_home : Vector2 = Vector2(200,150)
 var markers : Array = []
+var player_food : int = 10
+var lettuce_spots : Array = [Vector2(200,400), Vector2(150,850), Vector2(250,890), Vector2(270,1000), Vector2(600,600), Vector2(1500,900), Vector2(1700,300)]
 
 func _ready():
 	cam.limit_right = 2040
@@ -23,23 +25,27 @@ func _ready():
 	var q = queen.instance()
 	add_child(q)
 	q.translate(ant_home)
+	q.modulate = Color(1,0.1,0.2)
 	
 	randomize()
-	for i in range(10):
+	for i in range(30):
 		var ant1 = ant.instance()
 		add_child(ant1)
-		ant1.modulate = Color(1,1,0)
+		ant1.modulate = Color(0.7,0,0.2)
 		ant1.scale /= 2
 		ant1.translate( ant_home)
 		ant1.set_ant_home(q)
 	
 		
-	for i in range(200):
-		var lett = lettuce.instance()
-		add_child(lett)
-		while lett.move_and_collide(Vector2(10,10)) or lett.move_and_collide(-Vector2(10,10)) :
-			var try_position = Vector2(randi()%2000 , randi() %1100)
-			lett.translate(try_position)
+	for spot in lettuce_spots:
+		for i in range(randi()%50):
+			var lett = lettuce.instance()
+			add_child(lett)
+			while lett.move_and_collide(Vector2(10,10)) or lett.move_and_collide(-Vector2(10,10)) :
+				var rand_angle = rand_range(0, 2*PI)
+				var rand_radius = rand_range(0,50)
+				var try_position = spot + rand_radius * Vector2(cos(rand_angle), sin(rand_angle))
+				lett.translate(try_position)
 
 func _process(delta):
 	if Input.is_action_pressed("camera_bottom"):
