@@ -8,8 +8,6 @@ onready var ant_collider : CollisionPolygon2D = $"AntCollision"
 
 var marker : Resource = preload("res://scenes/marker.tscn")
 
-var marker : Resource = preload("res://scenes/marker.tscn")
-
 var context;
 
 var marker_max_time : float = 2
