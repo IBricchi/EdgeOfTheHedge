@@ -2,14 +2,30 @@ extends Control
 
 onready var exit = $exit
 
-var ant
+var ant setget set_ant
+func set_ant(val):
+	ant = val
+	#	IMPORTANT DO NOT DO SELF.VARIABLE so not to actiavte setter function
+	color = ant.color
+	speed = ant.speed
+	strength = ant.strength
+	health = ant.health
+	hunger = ant.hunger
+	
+	title.text = ant.name
+	color_slider.value = color.h * 255
+	speed_slider.value = speed
+	strength_slider.value = strength
+	health_slider.value = health
+	hunger_slider.value = hunger
+	compute_data()
 
 # cost
 var cost setget set_cost
 onready var cost_label = $panel/cont/cont/info/data_cont/data/cost
 func set_cost(val):
-	cost = val
-	ant.cost = val
+	cost = int(val)
+	ant.cost = int(val)
 	cost_label.text = "Cost: %d" % val
 
 # color
@@ -25,7 +41,7 @@ func set_color(val):
 var hunger setget set_hunger
 onready var hunger_slider = $panel/cont/cont/controls/vals/hunger
 func set_hunger(val):
-	hunger = val / hunger_slider.max_value
+	hunger = val
 	ant.hunger = val
 	compute_data()
 var hunger_rate setget set_hunger_rate
@@ -39,7 +55,7 @@ func set_hunger_rate(val):
 var speed setget set_speed
 onready var speed_slider = $panel/cont/cont/controls/vals/speed
 func set_speed(val):
-	speed = val / speed_slider.max_value
+	speed = val
 	ant.speed = val
 	compute_data()
 
@@ -47,7 +63,7 @@ func set_speed(val):
 var strength setget set_strength
 onready var strength_slider = $panel/cont/cont/controls/vals/strength
 func set_strength(val):
-	strength = val / strength_slider.max_value
+	strength = val
 	ant.strength = val
 	compute_data()
 
@@ -55,7 +71,7 @@ func set_strength(val):
 var health setget set_health
 onready var health_slider = $panel/cont/cont/controls/vals/health
 func set_health(val):
-	health = val / health_slider.max_value
+	health = val
 	ant.health = val
 	compute_data()
 
@@ -74,20 +90,6 @@ onready var title = $panel/cont/cont/title/Label
 func open_for(ant):
 	visible = true
 	self.ant = ant;
-#	IMPORTANT DO NOT DO SELF.VARIABLE so not to actiavte setter function
-	color = ant.color
-	speed = ant.speed
-	strength = ant.strength
-	health = ant.health
-	hunger = ant.hunger
-	
-	title.text = ant.name
-	color_slider.value = color.h * 255
-	speed_slider.value = speed
-	strength_slider.value = strength
-	health_slider.value = health
-	hunger_slider.value = hunger
-	compute_data()
 
 func on_update_color(val):
 	self.color = Color.from_hsv(val/255.0, 1, 1)
@@ -105,5 +107,14 @@ func on_update_health(val):
 	self.health = val
 
 func compute_data():
-	self.cost = (self.speed + self.strength + self.hunger + self.health) * 25
-	self.hunger_rate = (self.speed + self.strength + self.health) / 3 * 2
+	self.cost = (
+		self.speed / speed_slider.max_value +
+		self.strength / strength_slider.max_value +
+		self.hunger / hunger_slider.max_value +
+		self.health / health_slider.max_value
+	) * 25
+	self.hunger_rate = (
+		self.speed / speed_slider.max_value +
+		self.strength / strength_slider.max_value +
+		self.health / health_slider.max_value
+	) / 3 * 2

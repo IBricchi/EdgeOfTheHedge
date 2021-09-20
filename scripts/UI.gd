@@ -20,7 +20,7 @@ func set_time(val):
 var population: int = 0 setget set_population
 func set_population(val):
 	population = val
-	population_label.text = "Population: %d" % val
+	population_label.text = "Ants: %d" % val
 
 var player_food: int = 0 setget set_food
 func set_food(val):
@@ -31,6 +31,8 @@ func _ready():
 	for ant in ants:
 		ant.connect("open_ant_editor", self, "open_ant_editor")
 		ant.connect("birth_ant", self, "on_birth_ant")
+		ant_editor.ant = ant
+		ant_editor.compute_data()
 
 func _process(delta):
 	self.time += delta
