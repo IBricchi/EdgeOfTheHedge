@@ -16,7 +16,7 @@ var cost setget set_cost
 onready var cost_label = $cont/cont/controls/birth/Label
 func set_cost(val):
 	cost = val
-	cost_label.text = "£{0}".format([val])
+	cost_label.text = "{0}u".format([val])
 	emit_signal("context_update", self)
 
 # hunger

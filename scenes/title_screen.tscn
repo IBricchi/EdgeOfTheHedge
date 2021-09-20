@@ -45,9 +45,9 @@ size_flags_vertical = 3
 
 [node name="cont" type="VBoxContainer" parent="cont/title"]
 margin_left = 125.0
-margin_top = 148.0
+margin_top = 55.0
 margin_right = 868.0
-margin_bottom = 265.0
+margin_bottom = 358.0
 
 [node name="title" type="Label" parent="cont/title/cont"]
 margin_right = 743.0
@@ -59,9 +59,15 @@ align = 1
 [node name="subtitle" type="Label" parent="cont/title/cont"]
 margin_top = 89.0
 margin_right = 743.0
-margin_bottom = 117.0
+margin_bottom = 303.0
 custom_fonts/font = SubResource( 2 )
-text = "How do we proceede boss."
+text = "The High Queen has ordered us forwards,
+beyond the edges of our realm.
+
+Yet a treacherous rival ant colony has colonized the region. 
+
+How do we proceed boss ?
+You are our queen, lead us."
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false

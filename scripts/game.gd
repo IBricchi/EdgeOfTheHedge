@@ -11,16 +11,18 @@ var enemy_ants: Array = []
 onready var cam : Camera2D = $Camera2D
 
 export var cam_speed = 300
-export var starting_ants = 30
+export var starting_ants = 25
 
 onready var ui = $UI
 
 onready var lett_spawner = $LettuceSpawner
 
 var ant_home : Vector2 = Vector2(80,80)
-var markers : Array = []
+
 var player_food : int = 100 setget set_player_food
 
+var friendly_queen_hp  = 1  
+var enemy_queen_hp = 1
 
 func set_player_food(val):
 	player_food = val
@@ -110,11 +112,12 @@ func birth_ant(context, free = false):
 		self.ant_count += 1
 		add_child(ant_inst)
 		ant_inst.scale /= 2
-		ant_inst.translate(ant_home + Vector2(20,20))
+		ant_inst.translate(ant_home + Vector2(30,30))
 		ant_inst.set_ant_home(queen_inst)
 		ant_inst.set_context(context)
 		ant_inst.set_collision_layer_bit(3, true)
 		ant_inst.set_collision_mask_bit(4 , true)
+		ant_inst.set_enemy(enemyqueen)
 
 func on_add_food(count):
 	self.player_food += count
@@ -122,17 +125,31 @@ func on_add_food(count):
 func on_ant_death():
 	self.ant_count -= 1
 	
-	
+
+
+func queen_attacked(q, v):
+	if q == queen_inst:
+		friendly_queen_hp -= v
+		if friendly_queen_hp < 0 :
+			Global.win = false
+			Global.time = ui.time
+			get_tree().change_scene("res://scenes/death_screen.tscn")
+	else:
+		enemy_queen_hp -= v
+		if enemyqueen < 0:
+			pass
+			# victory
 
 func enemy_ant_spawn():
 	var ant1 = ant.instance()
 	add_child(ant1)
 	ant1.modulate = Color(0.25,0.05,0.1)
 	ant1.scale /= 2
-	ant1.translate( enemyqueen.position - Vector2(20,20))
+	ant1.translate( enemyqueen.position - Vector2(30,30))
 	ant1.set_ant_home(enemyqueen)
 	ant1.set_collision_layer_bit(4, true)
 	ant1.set_collision_mask_bit(3 , true)
 	enemy_ants.append(ant1)
+	ant1.set_enemy(queen_inst)
 	
 

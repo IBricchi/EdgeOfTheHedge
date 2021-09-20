@@ -44,6 +44,6 @@ shape = SubResource( 1 )
 rotation = 1.5708
 frames = SubResource( 6 )
 animation = "queen"
-frame = 1
+frame = 3
 speed_scale = 0.5
 playing = true

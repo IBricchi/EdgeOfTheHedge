@@ -1,10 +1,12 @@
 extends StaticBody2D
 
-var nom_nom_value : int = floor(rand_range(2,6)) # how many times this lettuce can be eaten between 2 and 5
+var nom_nom_value : int = floor(rand_range(12,20)) # how many times this lettuce can be eaten between 2 and 5
 
 onready var area = $area
 
 func _ready():
+	if randf() < 0.5:
+		scale.x *= -1
 	resize_according_to_value()
 
 var x
@@ -52,13 +54,13 @@ func _physics_process(delta):
 			self.visible = true
 
 func gets_eaten():
-	nom_nom_value -= 1
+	nom_nom_value -= 4
 	resize_according_to_value()
-	if not nom_nom_value:
+	if nom_nom_value < 1:
 		get_parent().remove_child(self)
 		
 		queue_free()
 
 
 func resize_according_to_value():
-	self.scale = Vector2(1,1)* 0.2* (nom_nom_value+1)
+	self.scale = Vector2(1,1) *0.04* (nom_nom_value+1)
