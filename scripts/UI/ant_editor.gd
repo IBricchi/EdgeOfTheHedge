@@ -26,7 +26,7 @@ onready var cost_label = $panel/cont/cont/info/data_cont/data/cost
 func set_cost(val):
 	cost = int(val)
 	ant.cost = int(val)
-	cost_label.text = "Cost: %d" % val
+	cost_label.text = "Cost: %d u" % val
 
 # color
 var color setget set_color
@@ -105,6 +105,7 @@ func on_update_hunger(val):
 
 func on_update_health(val):
 	self.health = val
+	
 
 func compute_data():
 	self.cost = (

@@ -17,7 +17,8 @@ script = ExtResource( 2 )
 
 [node name="AntDetails" type="MarginContainer" parent="."]
 anchor_bottom = 1.0
-margin_right = 176.0
+margin_top = 232.0
+margin_right = 223.0
 custom_constants/margin_right = 10
 custom_constants/margin_top = 10
 custom_constants/margin_left = 10
@@ -30,7 +31,7 @@ __meta__ = {
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 213.0
-margin_bottom = 590.0
+margin_bottom = 358.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
