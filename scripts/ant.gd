@@ -112,10 +112,10 @@ func _physics_process(delta):
 				if food_carried:
 					ant_priority = priority.go_home
 				else:
-						match mode:
-							0: ant_priority = priority.find_food
-							1:	ant_priority = priority.patrol
-							2: ant_priority = priority.fight
+					match mode:
+						0: ant_priority = priority.find_food
+						1:	ant_priority = priority.patrol
+						2: ant_priority = priority.fight
 				idle_timer = 1
 				desired_direction = - desired_direction
 			if not idle_sprite.visible:
@@ -169,7 +169,7 @@ func check_sensor():
 					if body.marktype == 1:
 						desired_direction = (body.position-position).normalized()
 						
-	elif ant_priority == priority.go_home :
+	elif ant_priority == priority.go_home:
 		for body in sensor_area.get_overlapping_areas():
 				if body.is_in_group("marker"):
 					if body.marktype == 0:

@@ -15,9 +15,6 @@ script = ExtResource( 1 )
 ]]
 shape = SubResource( 1 )
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
-polygon = PoolVector2Array( -8, -8, -8, 8, 8, 8, 8, -8 )
-
 [node name="Timer" type="Timer" parent="."]
 
 [connection signal="body_entered" from="." to="." method="_on_marker_body_entered"]

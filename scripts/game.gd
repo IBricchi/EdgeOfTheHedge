@@ -17,7 +17,7 @@ onready var ui = $UI
 
 onready var lett_spawner = $LettuceSpawner
 
-var ant_home : Vector2 = Vector2(80,80)
+var ant_home : Vector2 = Vector2(70,70)
 
 var player_food : int = 100 setget set_player_food
 
@@ -59,7 +59,7 @@ func _ready():
 	
 	enemyqueen = queen.instance()
 	add_child(enemyqueen)
-	enemyqueen.translate( Vector2(1975, 1080))
+	enemyqueen.translate( Vector2(1985, 1090))
 	enemyqueen.modulate = Color(0.3,0.05,0.1)
 	
 	for i in range(starting_ants):

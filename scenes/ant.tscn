@@ -99,18 +99,17 @@ script = ExtResource( 3 )
 rotation = 1.5708
 frames = SubResource( 6 )
 animation = "Idle"
-frame = 1
+frame = 3
 playing = true
 
 [node name="Basic Ant Walk" type="AnimatedSprite" parent="."]
 rotation = 1.5708
 frames = SubResource( 19 )
 animation = "Walk"
-frame = 4
+frame = 10
 playing = true
 
 [node name="AntCollision" type="CollisionPolygon2D" parent="."]
-visible = false
 polygon = PoolVector2Array( -8, -8, -8, 8, 32, 16, 32, -16 )
 
 [node name="Area2D" type="Area2D" parent="."]

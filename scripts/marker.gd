@@ -26,12 +26,6 @@ func _process(delta):
 	if lastcheck < 0 : 
 		lastcheck = 4
 		checked = false
-	if marktype == type.home:
-		$Polygon2D.modulate = Color(1,0,0)
-	if marktype == type.food:
-		$Polygon2D.modulate = Color(0,0,1)
-	if marktype == type.enemy:
-		$Polygon2D.modulate = Color(0,1,0)
 
 
 func _ready():
