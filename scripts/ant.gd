@@ -150,12 +150,12 @@ func check_sensor():
 		if min_dist.length()< 1000:
 			desired_direction = min_dist.normalized()
 		else:
-			for body in sensor_area.get_overlapping_bodies():
+			for body in sensor_area.get_overlapping_areas():
 				if body.is_in_group("marker"):
 					if body.marktype == 1:
 						desired_direction = (body.position-position).normalized()
 	elif ant_priority == priority.go_home :
-		for body in sensor_area.get_overlapping_bodies():
+		for body in sensor_area.get_overlapping_areas():
 				if body.is_in_group("marker"):
 					if body.marktype == 0:
 						desired_direction = (body.position-position).normalized()
