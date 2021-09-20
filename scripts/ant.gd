@@ -112,7 +112,10 @@ func _physics_process(delta):
 				if food_carried:
 					ant_priority = priority.go_home
 				else:
-					ant_priority = priority.find_food
+						match mode:
+							0: ant_priority = priority.find_food
+							1:	ant_priority = priority.patrol
+							2: ant_priority = priority.fight
 				idle_timer = 1
 				desired_direction = - desired_direction
 			if not idle_sprite.visible:
@@ -285,7 +288,10 @@ func reached_home():
 	emit_signal("add_food", food_carried)
 
 	hunger = hunger_max
-	ant_priority = priority.find_food
+	match mode:
+		0: ant_priority = priority.find_food
+		1:	ant_priority = priority.patrol
+		2: ant_priority = priority.fight
 	# bounce back in the same desired_direction that the ant came from plusminus pi/2
 	food_carried = 0
 	var rand_angle = atan(desired_direction.y / desired_direction.x) +  rand_range(PI/2, 3/2*PI)
