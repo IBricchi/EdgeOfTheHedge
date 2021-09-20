@@ -20,7 +20,6 @@ var lastcheck  = 3
 func _process(delta):
 	for area in get_overlapping_areas():
 		if area.is_in_group("marker") and queen == area.queen and marktype == area.marktype and not checked:
-			area.scale*= 1.2
 			destroy_marker()
 			area.checked = true
 	lastcheck -= delta

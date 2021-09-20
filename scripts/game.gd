@@ -21,8 +21,8 @@ var ant_home : Vector2 = Vector2(80,80)
 
 var player_food : int = 100 setget set_player_food
 
-var friendly_queen_hp  = 1  
-var enemy_queen_hp = 1
+var friendly_queen_hp  = 75
+var enemy_queen_hp = 75
 
 func set_player_food(val):
 	player_food = val
@@ -53,7 +53,7 @@ func _ready():
 	queen_inst.translate(ant_home)
 	queen_inst.modulate = Color(1,0.1,0.2)
 
-	for i in 5:
+	for i in 10:
 		birth_ant(ui.get_context(0), true)
 	
 	
@@ -114,6 +114,7 @@ func birth_ant(context, free = false):
 		ant_inst.set_collision_layer_bit(3, true)
 		ant_inst.set_collision_mask_bit(4 , true)
 		ant_inst.set_enemy(enemyqueen)
+		ant_inst.desired_direction = Vector2(rand_range(-1,1),rand_range(-1,1))
 
 func on_add_food(count):
 	self.player_food += count
@@ -132,9 +133,10 @@ func queen_attacked(q, v):
 			get_tree().change_scene("res://scenes/death_screen.tscn")
 	else:
 		enemy_queen_hp -= v
-		if enemyqueen < 0:
-			pass
-			# victory
+		if enemy_queen_hp < 0:
+			Global.win = true
+			Global.time = ui.time
+			get_tree().change_scene("res://scenes/death_screen.tscn")
 
 func enemy_ant_spawn():
 	var ant1 = ant.instance()

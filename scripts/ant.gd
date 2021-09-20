@@ -64,6 +64,8 @@ func _ready():
 
 func _physics_process(delta):
 	if alive:
+		if not idle_sprite.visible and not walk_sprite.visible:
+			walk_sprite.visible = true
 		hunger -= delta * hunger_rate;
 		
 		if hunger < 0: 
