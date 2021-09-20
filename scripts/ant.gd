@@ -25,6 +25,8 @@ var speed : float = rand_range(80,100)
 var alive : bool = true
 var strength : float = 30
 
+var mode
+
 var health_max : float = 20 setget set_health_max
 var health : float = health_max
 
@@ -133,6 +135,7 @@ func set_context(context):
 func update_context(context):
 	if alive:
 		modulate = context.color
+		self.mode = context.mode
 		self.speed = context.speed
 		self.hunger_max = context.hunger
 		self.hunger_rate = context.hunger_rate
