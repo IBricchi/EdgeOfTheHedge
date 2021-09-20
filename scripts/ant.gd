@@ -27,6 +27,8 @@ var speed : float = rand_range(40,50)
 var alive : bool = true
 var strength : float = 2
 
+var mode
+
 var health_max : float = 20 setget set_health_max
 var health : float = health_max
 
@@ -129,16 +131,14 @@ func set_context(context):
 func update_context(context):
 	if alive:
 		modulate = context.color
+
+		self.mode = context.mode
+
 		self.speed = context.speed
 		self.hunger_max = context.hunger
 		self.hunger_rate = context.hunger_rate
 		self.strength = context.strength
 		self.health_max = context.health
-		match context.mode:
-			0: self.ant_priority = context.mode
-			1: self.ant_priority = context.mode
-			2: self.ant_priority = context.mode
-			
 
 func check_sensor():
 	var space_state = get_world_2d().direct_space_state
