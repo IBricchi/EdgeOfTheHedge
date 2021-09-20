@@ -131,12 +131,13 @@ func set_context(context):
 	update_context(context)
 
 func update_context(context):
-	modulate = context.color
-	self.speed = context.speed
-	self.hunger_max = context.hunger
-	self.hunger_rate = context.hunger_rate
-	self.strength = context.strength
-	self.health_max = context.health
+	if alive:
+		modulate = context.color
+		self.speed = context.speed
+		self.hunger_max = context.hunger
+		self.hunger_rate = context.hunger_rate
+		self.strength = context.strength
+		self.health_max = context.health
 
 func check_sensor():
 	if ant_priority == priority.find_food or ant_priority == priority.patrol:

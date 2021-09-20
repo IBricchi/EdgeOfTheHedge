@@ -44,10 +44,6 @@ func _ready():
 	cam.limit_top = 0 
 	cam.limit_left = 0
 
-	ui.connect("birth_ant", self, "on_birth_ant")
-	
-
-
 	ui.connect("birth_ant", self, "birth_ant")
 	
 	queen_inst = queen.instance()
