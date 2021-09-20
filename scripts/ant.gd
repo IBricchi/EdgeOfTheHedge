@@ -13,31 +13,32 @@ signal add_food(count)
 
 var context;
 
-var marker_max_time : float = 2
+var marker_max_time : float = 2.5
 var markers_set : Array = []
 var marker_follow_timer : float  = 0
 var marker_set_timer : float = 0.4
 var idle_timer : float = 1
 var desired_direction : Vector2 = Vector2(rand_range(-1,-1),rand_range(-1,1)).normalized()
 var home : Node setget set_ant_home 
-var alive : bool = true
+var speed : float = rand_range(80,100)
 
-var speed : float;
+var alive : bool = true
+var strength : float = 30
 
 var health_max : float = 20 setget set_health_max
 var health : float = health_max
+
 func set_health_max(val):
 	health = health / health_max * val
 	health_max = val
 
-var hunger_max : float = 20 setget set_hunger_max
+var hunger_max : float = 40 setget set_hunger_max
+
 var hunger : float = hunger_max
 var hunger_rate : float = 1
 func set_hunger_max(val):
 	hunger = hunger / hunger_max * val
 	hunger_max = val
-
-var strength
 
 var food_carried :int = 0
 
@@ -45,7 +46,8 @@ enum priority {
 	find_food = 0, 
 	idle = 1,
 	fight = 2,
-	go_home = 3
+	go_home = 3, 
+	patrol = 4
 }
 
 var ant_priority : int = priority.find_food
@@ -59,6 +61,20 @@ func _ready():
 func _physics_process(delta):
 	if alive:
 		hunger -= delta * hunger_rate;
+		
+		if hunger < 0: 
+				if food_carried == 0 :
+					ant_death()
+				else:
+					food_carried -= 1
+					hunger = hunger_max
+					ant_priority = priority.idle
+					
+		if health < 0 :
+			ant_death()
+
+		if hunger < hunger_max / 2 or health < health_max/5:
+			priority.go_home
 
 		# if the ant is moving
 		if ant_priority != priority.idle :
@@ -70,40 +86,42 @@ func _physics_process(delta):
 			else:
 				marker_follow_timer -= delta
 			
-			check_sensors()
-				
-			manage_movement_and_collision( move_and_collide(delta* desired_direction * speed))
-			
+			check_sensor()
+		
+			look_at(position + desired_direction)
+			manage_movement_and_collision( move_and_collide(delta* desired_direction * speed), delta)
+		
 			# make sure the walk animation is playing and make sure the animation is playing at the correct speed
 			if not walk_sprite.visible:
-				print("walk sprite not visible")
 				walk_sprite.visible = true
 				idle_sprite.visible = false
-			walk_sprite.frames.set_animation_speed("Walk", 24* delta*speed)
+			walk_sprite.frames.set_animation_speed("Walk", speed)
 			# rotate the ant
-			look_at(position + desired_direction)
+			
 
 		# if the ant isnt moving play the idle animation		
 		else:
 			idle_timer -= delta
 			if idle_timer < 0:
-				ant_priority = priority.go_home
+				if food_carried:
+					ant_priority = priority.go_home
+				else:
+					ant_priority = priority.find_food
 				idle_timer = 1
 				desired_direction = - desired_direction
 			if not idle_sprite.visible:
 				walk_sprite.visible = false
 				idle_sprite.visible = true
-				
-		if hunger < 0 or health < 0: 
-			if food_carried == 0 :
-				ant_death()
-			else:
-				food_carried -= 1
-				hunger = hunger_max
-				health = max(health_max, health/2)
-	
-		if hunger < hunger_max / 2 or health < health_max/10:
-			priority.go_home
+			
+				# make sure the walk animation is playing and make sure the animation is playing at the correct speed
+				if not walk_sprite.visible:
+					walk_sprite.visible = true
+					idle_sprite.visible = false
+				walk_sprite.frames.set_animation_speed("Walk", 24* delta*speed)
+				# rotate the ant
+				look_at(position + desired_direction)
+					
+			
 
 func set_ant_home(v):
 	home = v
@@ -120,8 +138,8 @@ func update_context(context):
 	self.strength = context.strength
 	self.health_max = context.health
 
-func check_sensors():
-	if ant_priority == priority.find_food:
+func check_sensor():
+	if ant_priority == priority.find_food or ant_priority == priority.patrol:
 		var min_dist : Vector2 = Vector2(1000,1000)
 		for body in sensor_area.get_overlapping_bodies():
 			if body.is_in_group("Food"):
@@ -131,13 +149,45 @@ func check_sensors():
 						min_dist = dist
 		if min_dist.length()< 1000:
 			desired_direction = min_dist.normalized()
-		
-	elif ant_priority == priority.go_home:
+		else:
+			for body in sensor_area.get_overlapping_bodies():
+				if body.is_in_group("marker"):
+					if body.marktype == 1:
+						desired_direction = (body.position-position).normalized()
+	elif ant_priority == priority.go_home :
+		for body in sensor_area.get_overlapping_bodies():
+				if body.is_in_group("marker"):
+					if body.marktype == 0:
+						desired_direction = (body.position-position).normalized()
 		for body in sensor_area.get_overlapping_bodies():
 			if body.is_in_group("queen"):
 				desired_direction = (body.position - position).normalized()
+	if ant_priority == priority.go_home or ant_priority == priority.fight or ant_priority == priority.patrol:
+		for body in sensor_area.get_overlapping_bodies():
+			if body.is_in_group("ant"):
+				if body.home != home : 
+					desired_direction = (body.position + 3*  body.desired_direction - position).normalized()
+					return
+			elif body.is_in_group("marker"):
+				if body.marktype == 2:
+						desired_direction = (body.position-position).normalized()
 	
 	
+func fight(enemyant : Node, delta):
+	var marknum = len(markers_set)
+	for i in range(marknum/2, marknum):
+		markers_set[i].set_marker_type(2)
+	if enemyant.alive:
+		look_at(enemyant.position)
+		enemyant.health -=  strength *delta
+		if walk_sprite.visible:
+			walk_sprite.visible = false
+			idle_sprite.visible = true
+		#desired_direction = Vector2.ZERO
+		enemyant.desired_direction = Vector2.ZERO
+		enemyant.look_at(position)
+	else:
+		desired_direction = (position - enemyant.position).normalized()
 	
 func ant_death():
 	emit_signal("die")
@@ -147,6 +197,8 @@ func ant_death():
 	walk_sprite.stop()
 	idle_sprite.stop()
 	alive = false
+	$AntCollision.disabled = true
+	$Timer.start(30)
 	
 	
 func put_down_marker():
@@ -163,18 +215,19 @@ func put_down_marker():
 
 func eat(food):
 	food.gets_eaten()
+	if not ant_priority == priority.fight:
+		ant_priority = priority.idle
 	if hunger < hunger_max/4 :
 		hunger = hunger_max
 	elif health < health/3:
 		health += 5
 	else: 
 		food_carried += 1
-	ant_priority = priority.idle
 	var marknum : int = len(markers_set)
 	for i in range(marknum/2, marknum):
-		markers_set[i].marktype = 1
+		markers_set[i].set_marker_type(1)
 
-func manage_movement_and_collision(res):
+func manage_movement_and_collision(res, delta):
 	# if the ant collides stop moving
 		if res:
 			if res.collider.is_in_group("Food"):
@@ -182,18 +235,33 @@ func manage_movement_and_collision(res):
 				
 			# collide off the wall
 			if res.collider.is_in_group("hedge"):
-				desired_direction = pow(-1, randi()%2)*Vector2(desired_direction.y, -desired_direction.x)
+				
+				desired_direction = (desired_direction.bounce(res.normal)).normalized()
 				if markers_set:
 					markers_set[-1].destroy_marker()
 				
 			if res.collider.is_in_group("queen"):
 				reached_home()
+				
+				
+			if res.collider.is_in_group("ant"):
+				if res.collider.alive:
+					fight(res.collider, delta)
+				else:
+					desired_direction *= -1 
 
 
 func reached_home():
 	emit_signal("add_food", food_carried)
+
 	hunger = hunger_max
 	ant_priority = priority.find_food
 	# bounce back in the same desired_direction that the ant came from plusminus pi/2
+	food_carried = 0
 	var rand_angle = atan(desired_direction.y / desired_direction.x) +  rand_range(PI/2, 3/2*PI)
 	desired_direction = Vector2(cos(rand_angle), sin(rand_angle))
+
+
+func _on_Timer_timeout():
+	get_parent().remove_child(self)
+	queue_free()

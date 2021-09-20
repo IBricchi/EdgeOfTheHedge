@@ -43,7 +43,7 @@ func _physics_process(delta):
 		var objs = area.get_overlapping_bodies()
 		if objs:
 			for obj in objs:
-				if obj.is_in_group("hedge"):
+				if obj.is_in_group("hedge") or obj.is_in_group("queen"):
 					move()
 					break
 		last_move -= delta
